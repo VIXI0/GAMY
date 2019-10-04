@@ -3,7 +3,7 @@ module.exports = {
     host: 'localhost',
     user: 'GAMY',
     password: 'lamelmard',
-    database : 'ROM_test'
+    database : 'rom_test'
   },
   SECRET_KEY: 'IKYUJTYHRTGERFEDWESRDTFHBFERTGFDERTHY875'
 }

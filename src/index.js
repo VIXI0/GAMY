@@ -1,8 +1,7 @@
 const { ApolloServer } = require('apollo-server-express');
 const express = require("express");
 
-const mysql = require('mysql');
-const { MAYA } = require('../config.js')
+const MyS = require('./MyS');
 
 const typeDefs = require('./typeDefs');
 const resolvers = require('./resolvers');
@@ -10,17 +9,17 @@ const resolvers = require('./resolvers');
 const server = new ApolloServer({ typeDefs, resolvers });
 const app = express();
 
-const con = mysql.createConnection(MAYA);
+
 
 server.applyMiddleware({ app, path: '/' });
 
-con.connect(function(err) {
+MyS.connect(function(err) {
   if (err) {
     console.error('error connecting: ' + err.stack);
     return;
   }
 
-  console.log('connected as id ' + con.threadId);
+  console.log('connected as id ' + MyS.threadId);
 });
 
 app.listen(3000, function () {

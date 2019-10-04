@@ -1,13 +1,13 @@
-//importacion modelos
-//const {SuplidorMM, ProductoMM, UsuarioMM, MarcaMM, CrudMM, BackMM, RoleMM } = require('./mdbe.js')
+//importacion conection
+const MyS = require('./MyS');
 
-//const bcrypt = require('bcryptjs')
-//const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-//const checkAuth = require('../util/check-auth');
-//const {SECRET_KEY} = require('../config');
+const checkAuth = require('../util/check-auth');
+const {SECRET_KEY} = require('../config');
 
-//const { UserInputError } = require('apollo-server-express');
+const { UserInputError } = require('apollo-server-express');
 
 //const path = require("path");
 //const { createWriteStream} = require("fs");
@@ -21,6 +21,15 @@ module.exports = {
 
 
     greet: (root,args) => {
+      MyS.query("select * from supplier;", function (err, res) {
+
+                if(err) {
+                    console.log("error: ", err);
+                }
+                else{
+                    console.log(res);
+                }
+            });
       return `hellow ${args.name}`
     },
 
