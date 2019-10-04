@@ -1,0 +1,23 @@
+{
+  "name": "GAMY",
+  "version": "1.0.0",
+  "description": "graphql api mysql",
+  "main": "index.js",
+  "repository": "https://github.com/VIXI0/GAMY.git",
+  "author": "VIXI0 <mickycanela@gmail.com>",
+  "scripts": {
+    "start": "nodemon src/index.js",
+    "pack": "pkg --help"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server-express": "^2.9.4",
+    "bcryptjs": "^2.4.3",
+    "express": "^4.17.1",
+    "graphql": "^14.5.8",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.17.1",
+    "nodemon": "^1.19.3",
+    "pkg": "^4.4.0"
+  }
+}
