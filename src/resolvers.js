@@ -1,5 +1,5 @@
 //importacion conection
-const MyS = require('./MyS');
+const { MyQ } = require('./MyS');
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -39,18 +39,28 @@ module.exports = {
     },
 
     async roles(_,{req}, context) {
-      checkAuth(context)
-      //return await RoleMM.find()
+      //checkAuth(context)
+
+
+      let res = await MyQ("select * from roles;");
+
+      res.forEach( function(part, index) {
+        this[index].permission = JSON.parse( this[index].permission );
+      }, res);
+       return res;
+
     },
 
     async getRole(_,{req}, context) {
-      const auth = checkAuth(context)
-      //return await RoleMM.findOne({_id: auth.role})
+      const auth = checkAuth(context);
+      let rol = await MyQ('SELECT * FROM roles WHERE role_id = ?;',[auth.role_id]);
+      rol[0].permission = JSON.parse( rol[0].permission );
+      return rol[0];
     },
 
     async currentU(_,{req}, context){
       const auth = checkAuth(context)
-      return auth.user
+      return auth.name
     },
 
     //cerrar session
@@ -110,22 +120,23 @@ module.exports = {
     //user
     async login(_, {input},context){
 
-      const look = input.user
-      const user = await UsuarioMM.findOne({user: look})
-      if(!user){
+      let user = await MyQ('select employs.employ_id AS employ_id, employs.username AS username, employs.password AS password, employs.active AS active, employs.role_id AS role_id, persons.name AS name from employs RIGHT JOIN persons ON employs.person_id = persons.person_id WHERE employs.username = ?;', [input.username]);
+
+
+      if(!user[0]){
         return "Usuario no existente"
       }
-      if(!user.active){
+      if(user[0].active < 1){
         return "Usuario inactivo"
       }
-      const match = await bcrypt.compare(input.password,user.password)
+      const match = await bcrypt.compare(input.password,user[0].password)
       if(!match){
-        return "Contraseña incorrecta"
+        return "Contraseña incorrecta";
       }
       const token = jwt.sign({
-        id: user.id,
-        user: user.user,
-        role: user.role
+        employ_id: user[0].employ_id,
+        name: user[0].name,
+        role_id: user[0].role_id
       }, SECRET_KEY, {expiresIn: '24h'})
 
       return token

@@ -1,12 +1,12 @@
 const { ApolloServer } = require('apollo-server-express');
 const express = require("express");
 
-const MyS = require('./MyS');
+const {MyS} = require('./MyS');
 
 const typeDefs = require('./typeDefs');
 const resolvers = require('./resolvers');
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ typeDefs, resolvers, playground: true, context: ({ req }) => ({ req }) });
 const app = express();
 
 

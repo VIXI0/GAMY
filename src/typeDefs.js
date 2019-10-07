@@ -59,9 +59,10 @@ type usuario {
 }
 
 type role {
-  _id: ID
-  nombre: String
-  permisos: [sistema]
+  role_id: ID
+  role_name: String
+  permission: [sistema]
+  active: Boolean
 }
 
 type sistema {
@@ -161,11 +162,8 @@ type createAnswer {
 
 
   input UsuarioInput {
-    user: String!
+    username: String!
     password: String!
-    createdAt: String
-    active: Boolean
-    role: ID
   }
 
   input RoleInput {
