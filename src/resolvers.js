@@ -120,7 +120,7 @@ module.exports = {
     //user
     async login(_, {input},context){
 
-      let user = await MyQ('select employs.employ_id AS employ_id, employs.username AS username, employs.password AS password, employs.active AS active, employs.role_id AS role_id, persons.name AS name from employs RIGHT JOIN persons ON employs.person_id = persons.person_id WHERE employs.username = ?;', [input.username]);
+      let user = await MyQ('select employs.employ_id AS employ_id, employs.username AS username, employs.password AS password, employs.active AS active, employs.role_id AS role_id, persons.name AS name, person.lastname AS lastname from employs RIGHT JOIN persons ON employs.person_id = persons.person_id WHERE employs.username = ?;', [input.username]);
 
 
       if(!user[0]){
@@ -135,7 +135,7 @@ module.exports = {
       }
       const token = jwt.sign({
         employ_id: user[0].employ_id,
-        name: user[0].name,
+        name: user[0].name + user[0].lastname,
         role_id: user[0].role_id
       }, SECRET_KEY, {expiresIn: '24h'})
 
